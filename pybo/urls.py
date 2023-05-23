@@ -45,4 +45,6 @@ urlpatterns = [
          vote_views.vote_question, name='vote_question'),
     path('vote/answer/<int:answer_id>/',
          vote_views.vote_answer, name='vote_answer'),
+    path('vote/comment/create/question/<int:comment_id>/',
+         vote_views.vote_comment_question, name='vote_create_comment_question'),
 ]

@@ -67,6 +67,10 @@
                                                class="small delete"
                                                data-uri="{% url 'pybo:comment_delete_question' comment.id  %}">삭제</a>
                                         {% endif %}
+                                        <a href="#"
+                                           data-uri="{% url 'pybo:vote_create_comment_question' comment.id  %}"
+                                           class="recommend btn btn-sm btn-secondary">추천
+                                            <span class="badge text-bg-warning">{{ comment.voter.count }}</span></a>
                                     </div>
                                 {% endfor %}
                             </div>
