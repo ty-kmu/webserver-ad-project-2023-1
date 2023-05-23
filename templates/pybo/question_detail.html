@@ -52,7 +52,11 @@
                         {% if question.comment_set.count > 0 %}
                             <div class="mt-3">
                                 {{ question.comment_set.count }} 개의 댓글이 있음.
-                                {% for comment in question.comment_set.all %}
+                                <select class="form-control so">
+                                    <option value="recent" {% if so == 'recent' %}selected{% endif %}>최신순</option>
+                                    <option value="recommend" {% if so == 'recommend' %}selected{% endif %}>추천순</option>
+                                </select>
+                                {% for comment in question_comment_list %}
                                     <a name="comment_{{ comment.id }}"></a>
                                     <div class="comment py-2 text-muted">
                                         <span style="white-space: pre-line;">{{ comment.content }}</span>
@@ -184,10 +188,20 @@
                     location.href = $(this).data('uri');
                 }
             });
+
             $(".recommend").on('click', function() {
                 if (confirm("정말로 추천하시겠습니까?")) {
                     location.href = $(this).data('uri');
                 }
+            });
+            $(".so").on('change', function() {
+                console.log("dddd");
+                let urlParams = new URLSearchParams();
+                urlParams.append("so", $(this).val());
+                urlParams.append("page", 1);
+
+                var newUrl = window.location.pathname + '?' + urlParams.toString();
+                window.location.href = newUrl;
             });
         });
     </script>
