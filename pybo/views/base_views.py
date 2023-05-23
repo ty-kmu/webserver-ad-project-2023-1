@@ -58,8 +58,11 @@ def detail(request, question_id):
     else:  # recent
         question_comment_list = question_comment_list.order_by('-create_date')
 
+    paginator = Paginator(question_comment_list, 10)  # 페이지당 10개씩 보여주기
+    question_comment_paginator = paginator.get_page(page)
+
     context = {'question': question,
-               'question_comment_list': question_comment_list,
+               'question_comment_list': question_comment_paginator,
                'page': page,
                'so': so}
     return render(request, 'pybo/question_detail.html', context)
