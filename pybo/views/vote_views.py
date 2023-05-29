@@ -19,6 +19,19 @@ def vote_question(request, question_id):
 
 
 @login_required(login_url='common:login')
+def vote_question_delete(request, question_id):
+    """
+    pybo 질문추천취소
+    """
+    question = get_object_or_404(Question, pk=question_id)
+    if request.user in question.voter.all():
+        question.voter.remove(request.user)
+    else:
+        messages.error(request, '본인이 추천한 글만 추천을 취소할 수 있습니다.')
+    return redirect('pybo:detail', question_id=question.id)
+
+
+@login_required(login_url='common:login')
 def vote_answer(request, answer_id):
     """
     pybo 답글추천등록
@@ -28,6 +41,19 @@ def vote_answer(request, answer_id):
         messages.error(request, '본인이 작성한 글은 추천할 수 없습니다')
     else:
         answer.voter.add(request.user)
+    return redirect('pybo:detail', question_id=answer.question.id)
+
+
+@login_required(login_url='common:login')
+def vote_answer_delete(request, answer_id):
+    """
+    pybo 답글추천취소
+    """
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.user in answer.voter.all():
+        answer.voter.remove(request.user)
+    else:
+        messages.error(request, '본인이 추천한 글만 추천을 취소할 수 있습니다.')
     return redirect('pybo:detail', question_id=answer.question.id)
 
 

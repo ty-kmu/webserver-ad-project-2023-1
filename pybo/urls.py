@@ -43,8 +43,12 @@ urlpatterns = [
     # vote_views.py
     path('vote/question/<int:question_id>/',
          vote_views.vote_question, name='vote_question'),
+    path('vote/question/delete/<int:question_id>/',
+         vote_views.vote_question_delete, name='vote_question_delete'),
     path('vote/answer/<int:answer_id>/',
          vote_views.vote_answer, name='vote_answer'),
+    path('vote/answer/delete/<int:answer_id>/',
+         vote_views.vote_answer_delete, name='vote_answer_delete'),
     path('vote/comment/create/question/<int:comment_id>/',
          vote_views.vote_comment_question, name='vote_create_comment_question'),
 ]
