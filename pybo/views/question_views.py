@@ -37,11 +37,17 @@ def question_modify(request, question_id):
         return redirect('pybo:detail', question_id=question.id)
 
     if request.method == "POST":
+        previous_subject = question.subject  # 수정 이전 제목 저장
+        previous_content = question.content  # 수정 이전 내용 저장
+
         form = QuestionForm(request.POST, instance=question)
         if form.is_valid():
             question = form.save(commit=False)
             question.author = request.user
-            question.modify_date = timezone.now()  # 수정일시 저장
+            question.modify_date = timezone.now()
+            question.add_edit_history(
+                previous_subject, previous_content)  # 히스토리 모델 저장
+
             question.save()
             return redirect('pybo:detail', question_id=question.id)
     else:

@@ -49,6 +49,8 @@ urlpatterns = [
          vote_views.vote_answer, name='vote_answer'),
     path('vote/answer/delete/<int:answer_id>/',
          vote_views.vote_answer_delete, name='vote_answer_delete'),
-    path('vote/comment/create/question/<int:comment_id>/',
-         vote_views.vote_comment_question, name='vote_create_comment_question'),
+    path('vote/comment/create/<int:comment_id>/',
+         vote_views.vote_create_comment, name='vote_create_comment'),
+    path('vote/comment/delete/<int:comment_id>/',
+         vote_views.vote_delete_comment, name='vote_delete_comment'),
 ]

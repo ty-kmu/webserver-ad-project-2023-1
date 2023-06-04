@@ -58,13 +58,39 @@ def vote_answer_delete(request, answer_id):
 
 
 @login_required(login_url='common:login')
-def vote_comment_question(request, comment_id):
+def vote_create_comment(request, comment_id):
     """
-    pybo 답글추천등록
+    pybo 댓글 추천등록
     """
+    comment_type = request.GET.get('type')
     comment = get_object_or_404(Comment, pk=comment_id)
+
     if request.user == comment.author:
         messages.error(request, '본인이 작성한 댓글은 추천할 수 없습니다')
     else:
         comment.voter.add(request.user)
-    return redirect('pybo:detail', question_id=comment.question.id)
+
+    if comment_type == "question":
+        return redirect('pybo:detail', question_id=comment.question.id)
+    else:
+        answer = get_object_or_404(Answer, pk=comment.answer.id)
+        return redirect('pybo:detail', question_id=answer.question.id)
+
+
+@login_required(login_url='common:login')
+def vote_delete_comment(request, comment_id):
+    """
+    pybo 댓글 추천취소
+    """
+    comment_type = request.GET.get('type')
+    comment = get_object_or_404(Comment, pk=comment_id)
+    if request.user in comment.voter.all():
+        comment.voter.remove(request.user)
+    else:
+        messages.error(request, '본인이 추천한 댓글만 추천을 취소할 수 있습니다.')
+
+    if comment_type == "question":
+        return redirect('pybo:detail', question_id=comment.question.id)
+    else:
+        answer = get_object_or_404(Answer, pk=comment.answer.id)
+        return redirect('pybo:detail', question_id=answer.question.id)

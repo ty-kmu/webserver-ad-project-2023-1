@@ -14,6 +14,23 @@ class Question(models.Model):
     def __str__(self):
         return self.subject
 
+    def add_edit_history(self, previous_subject, previous_content):
+        QuestionEditHistory.objects.create(
+            question=self,
+            previous_subject=previous_subject,
+            previous_content=previous_content,
+        )
+
+
+class QuestionEditHistory(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    modified_date = models.DateTimeField(auto_now_add=True)
+    previous_subject = models.CharField(max_length=200)
+    previous_content = models.TextField()
+
+    def __str__(self):
+        return f"수정 {self.question.subject} - {self.modified_date}"
+
 
 class Answer(models.Model):
     author = models.ForeignKey(
