@@ -240,41 +240,29 @@
                                 <div class="d-flex justify-content-end">
                                     {% if answer.modify_date %}
                                         <div class="badge bg-light text-dark p-2 text-left mx-3">
-                                            <div class="mb-2">modified at</div>
+                                            <div class="mb-2">수정</div>
+                                            <span>총 수정 {{ answer.modify_count }}회</span>
                                             <div>{{ answer.modify_date }}</div>
                                         </div>
                                     {% endif %}
                                     <div class="badge bg-light text-dark p-2 text-left">
-                                        <div class="mb-2">{{ answer.author.username }}</div>
+                                        <div class="mb-2">작성</div>
+                                        <div>{{ answer.author.username }}</div>
                                         <div>{{ answer.create_date }}</div>
                                     </div>
                                 </div>
                                 {% if request.user == answer.author %}
                                     <div class="my-3">
                                         <a href="{% url 'pybo:answer_modify' answer.id  %}"
-                                           class="btn btn-sm btn-outline-secondary">수정</a>
+                                           class="btn btn-sm btn-outline-success">수정</a>
                                         <a href="#"
-                                           class="delete btn btn-sm btn-outline-secondary "
+                                           class="delete btn btn-sm btn-outline-danger"
                                            data-uri="{% url 'pybo:answer_delete' answer.id  %}">삭제</a>
                                     </div>
                                 {% endif %}
                                 <hr>
                                 {% if answer.comment_set.count > 0 %}
                                     <div class="mt-3">
-                                        {% comment %} {% for comment in answer.comment_set.all %}
-                                            <a name="comment_{{ comment.id }}"></a>
-                                            <div class="comment py-2 text-muted">
-                                                <span style="white-space: pre-line;">{{ comment.content }}</span>
-                                                <span>
-                                                    - {{ comment.author }}, {{ comment.create_date }}
-                                                    {% if comment.modify_date %}(수정:{{ comment.modify_date }}){% endif %}
-                                                </span>
-                                                {% if request.user == comment.author %}
-                                                    <a href="{% url 'pybo:comment_modify_answer' comment.id  %}" class="small">수정</a>,
-                                                    <a href="#" class="small delete" data-uri="{% url 'pybo:comment_delete_answer' comment.id  %}">삭제</a>
-                                                {% endif %}
-                                            </div>
-                                        {% endfor %} {% endcomment %}
                                         <div class="row justify-content-between py-2 mx-0 my-3 bg-light">
                                             <div class="col-10 fs-5">
                                                 <b>{{ answer.comment_set.count }}</b>개의 댓글이 있습니다.
